@@ -1,34 +1,53 @@
 import { Selector, t } from 'testcafe';
 
-const urlBase = 'https://demoqa.com/login';
-const username = 'demoautomation';
-const password = 'Demoautomation01!';
+const urlBase = 'https://www.saucedemo.com/';
+const username = 'standard_user';
+const password = 'secret_sauce';
+var inputUserName = Selector('#user-name');
+var inputPassword = Selector('input').withAttribute('name','password');
+var buttonLogin = Selector('input').withAttribute('type','submit');
 
 
 fixture `Login Test`// declare the fixture
     .page(urlBase)
-    
 
 test('Check page of testing', async t => { //declare of test
 //declare all action and asserts of test
-var logo = Selector('img').withAttribute('src','/images/Toolsqa.jpg');
-var inputUserName = Selector('#userName');
-var inputPassword = Selector('input').withAttribute('type','password');
-var buttonLogin = Selector('#login');
+var logo = Selector('div').withAttribute('class','login_logo');
+var textoButton = await buttonLogin.value;
 
+console.log("Textodelboton "+ await buttonLogin.value)
 //declare asserts
    await t 
         .wait(2000)
         .expect(logo.exists).ok('The logo is not ok')
         .expect(inputUserName.exists).ok('The username input is not ok')
-        .expect(inputPassword.exists).ok('The username input is not ok')
-        .expect(buttonLogin.exists).ok('The username input is not ok')
-        .expect(buttonLogin.withText('Login').exists).ok('The text in button is not ok');
+        .expect(inputPassword.exists).ok('The password input is not ok')
+        .expect(buttonLogin.exists).ok('The buttonLogin input is not ok')
+        .expect(textoButton == 'Login').ok('The text in button is not ok');
 
+});
+
+test('Loginok', async t => {
+
+    var product = Selector('span').withAttribute('class','title');
 //declare actions
     await t
         .typeText(inputUserName, username)
         .typeText(inputPassword, password)
-        //.wait(4000)
-        .click(buttonLogin);
+        .click(buttonLogin)
+        .wait(8000);
+
+    await t
+
+        .expect(product.exists).ok('Product not exist')
+        .expect(product.withText('Products').exists).ok('Texto not exist');
+
+
+
+
+
 });
+
+
+
